@@ -1,4 +1,4 @@
-# Module 3 - Workload Isolation with Microsegmentation
+# Module 3 - Blocking Lateral Movement with Microsegmentation
 
 Calico provides methods to enable fine-grained access controls between your microservices and external databases, cloud services, APIs, and other applications by using the workload access control with namespace isolation recommendation, as learned in the previous module.
 
