@@ -9,7 +9,7 @@ During this workshop, we will use the `Cat Facts Application` as an example to w
 1. Clone this repository in your AWS CloudShell.
 
    ```bash
-   git clone hhttps://github.com/tigera-solutions/cc-eks-implementing-network-security.git && \
+   git clone https://github.com/tigera-solutions/cc-eks-implementing-network-security.git && \
    cd cc-eks-implementing-network-security
    ```
 
