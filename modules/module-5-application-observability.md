@@ -16,15 +16,15 @@ In the bottom pane you will see L7 logs in the HTTP tab.
 
 ![http_logs](https://user-images.githubusercontent.com/104035488/216352791-bdbb8376-3b24-4590-81f4-a6b411c1a1cd.gif)
 
-## Kibana dashboards and logs
+## Calico Cloud Elastic dashboards and logs
 
-Kibana is the frontend for Calico Cloud Elasticsearch, which is the logging infrastructure that centrally stores logs from all managed clusters. Kibana provides an interface to explore Elasticsearch logs and gain insights into workload communication traffic volume, performance, and other key aspects of cluster operations. Log data is also summarized in custom dashboards.
+Calico Cloud Elastic is the frontend for Calico Cloud Elasticsearch, which is the logging infrastructure that centrally stores logs from all managed clusters. Calico Cloud Elastic provides an interface to explore Elasticsearch logs and gain insights into workload communication traffic volume, performance, and other key aspects of cluster operations. Log data is also summarized in custom dashboards.
 
-### Start Kibana and access dashboards
+### Start Calico Cloud Elastic and access dashboards
 
-In Manager UI, from the left navbar select, Kibana. A new browser tab opens into Kibana.
+In Manager UI, from the left navbar select, `Logs`. A new browser tab opens into Calico Cloud Elastic.
 
-In Kibana, click the hamburger icon in the top left corner, and select Analytics, Dashboard.
+In Calico Cloud Elastic, click the hamburger icon in the top left corner, and select Analytics, Dashboard.
 
 ![kibana-dashboard](https://user-images.githubusercontent.com/104035488/216352874-83d3dd93-0596-4791-b974-e18c0cd364c7.png)
 
