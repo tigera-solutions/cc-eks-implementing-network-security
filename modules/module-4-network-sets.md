@@ -10,7 +10,7 @@ As you saw in the previous module, it is also possible to create network policie
 
    ```yaml
    kubectl apply -f - <<-EOF
-   kind: GlobalNetworkSet
+   kind: NetworkSet
    apiVersion: projectcalico.org/v3
    metadata:
      name: allowed-api
