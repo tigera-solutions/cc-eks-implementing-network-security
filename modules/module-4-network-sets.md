@@ -2,11 +2,7 @@
 
 As you saw in the previous module, it is also possible to create network policies to control access to specific domain names. Now, let's use NetworkSets to compile a list of domain names, allowing the policy to refer to this list rather than to individual domains. NetworkSets are particularly useful when multiple policies require access to the same domains. Instead of incorporating the domains into each policy, you simply include them in the NetworkSet list, and it will automatically apply to all policies referencing it.
 
-1. Edit the `db` policy to use a `NetworkSet` with DNS domain instead of inline DNS rule.
-
-   a. Apply a policy to allow access to `dog.ceo`  and `catfact.ninja` endpoint using DNS policy.
-
-   Deploy the Network Set
+1. Let's start by creating the `allowed-api` NetworkSet by applying the following yaml.
 
    ```yaml
    kubectl apply -f - <<-EOF
@@ -24,11 +20,15 @@ As you saw in the previous module, it is also possible to create network policie
    EOF
    ```
 
-   b. Change the worker policy to refer to the allowed-api Network set using its label as to: Endpoint.
+   This NetworkSet is a list of two domains: `dog.ceo` and `catfact.ninja`.
 
+2. Now, edit the `worker` policy to use a `NetworkSet` instead of inline DNS rule.
 
+   Change the worker policy to refer to the allowed-api Network set using its label as `to:` `Endpoint`.
 
-   c. Test the access to the endpoints.
+<image>
+
+3. Test the access to the allowed endpoints.
 
    ```bash
    # test egress access to dog.ceo from worker pod - this should be allowed.
@@ -36,11 +36,18 @@ As you saw in the previous module, it is also possible to create network policie
    ```
 
    ```bash
+   # test egress access to dog.ceo from worker pod - this should be allowed.
+   kubectl -n catfacts exec -t $(kubectl -n catfacts get po -l app=worker -ojsonpath='{.items[0].metadata.name}') -- sh -c 'curl -m3 -skI https://catfact.ninja/ 2>/dev/null | grep -i http'
+   ```
+
+4. Try to access an endpoint that was not allowed, like `api.twilio.com`, for example.
+
+   ```bash
    # test egress access to api.twilio.com - this shoudl fail.
    kubectl -n catfacts exec -t $(kubectl -n catfacts get po -l app=worker -ojsonpath='{.items[0].metadata.name}') -- sh -c 'curl -m3 -skI https://api.twilio.com 2>/dev/null | grep HTTP'
    ```
 
-   d. Modify the `NetworkSet` to include `*.twilio.com` in dns domain and test egress access to `api.twilio.com` again.
+5. Modify the `NetworkSet` to include `*.twilio.com` in dns domain and test egress access to `api.twilio.com` again.
 
    ```bash
    # test egress access to api.twilio.com again and it should be allowed.
@@ -51,7 +58,7 @@ As you saw in the previous module, it is also possible to create network policie
 
 The NetworkSet can also be used to block access from a specific ip address or cidr to an endpoint in your cluster. To demonstrate it, we are going to block the access from your workstation to the `facts` external `LoadBalancer` service.
 
-   a. Test the access to the ```facts``` external service
+   a. Test the access to the `facts` external service
 
    ```bash
    curl -sI -m3 $(kubectl get svc -n catfacts facts -ojsonpath='{.status.loadBalancer.ingress[0].hostname}') | grep -i http
@@ -79,7 +86,7 @@ The NetworkSet can also be used to block access from a specific ip address or ci
    EOF
    ```
 
-   d. Create the policy to deny access to the ```facts``` service.
+   d. Create the policy to deny access to the `facts` service.
 
    ```yaml
    kubectl apply -f - <<-EOF
@@ -128,7 +135,7 @@ The NetworkSet can also be used to block access from a specific ip address or ci
    EOF
    ```
 
-   a. Test the access to the ```facts``` service. It is blocked now. Wait a few minutes and check the `Activity > Alerts`.
+   a. Test the access to the `facts` service. It is blocked now. Wait a few minutes and check the `Activity > Alerts`.
 
    ```bash
    curl -m3 $(kubectl get svc -n catfacts facts -ojsonpath='{.status.loadBalancer.ingress[0].hostname}')
