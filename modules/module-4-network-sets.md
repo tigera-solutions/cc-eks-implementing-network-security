@@ -31,25 +31,25 @@ As you saw in the previous module, it is also possible to create network policie
    c. Test the access to the endpoints.
 
    ```bash
-   # test egress access to api.twilio.com from db pod
+   # test egress access to dog.ceo from worker pod - this should be allowed.
    kubectl -n catfacts exec -t $(kubectl -n catfacts get po -l app=worker -ojsonpath='{.items[0].metadata.name}') -- sh -c 'curl -m3 -skI https://dog.ceo 2>/dev/null | grep -i http'
    ```
 
    ```bash
-   # test egress access to www.google.com
-   kubectl -n catfacts exec -t $(kubectl -n catfacts get po -l app=db -ojsonpath='{.items[0].metadata.name}') -- sh -c 'curl -m3 -skI https://www.google.com 2>/dev/null | grep HTTP'
+   # test egress access to api.twilio.com - this shoudl fail.
+   kubectl -n catfacts exec -t $(kubectl -n catfacts get po -l app=worker -ojsonpath='{.items[0].metadata.name}') -- sh -c 'curl -m3 -skI https://api.twilio.com 2>/dev/null | grep HTTP'
    ```
 
-   d. Modify the `NetworkSet` to include `*.google.com` in dns domain and test egress access to ```www.google.com``` again.
+   d. Modify the `NetworkSet` to include `*.twilio.com` in dns domain and test egress access to `api.twilio.com` again.
 
    ```bash
-   # test egress access to www.google.com again and it should be allowed.
-   kubectl -n catfacts exec -t $(kubectl -n catfacts get po -l app=db -ojsonpath='{.items[0].metadata.name}') -- sh -c 'curl -m3 -skI https://www.google.com 2>/dev/null | grep HTTP'
+   # test egress access to api.twilio.com again and it should be allowed.
+   kubectl -n catfacts exec -t $(kubectl -n catfacts get po -l app=worker -ojsonpath='{.items[0].metadata.name}') -- sh -c 'curl -m3 -skI https://api.twilio.com 2>/dev/null | grep HTTP'
    ```
 
 ## Ingress Policies using NetworkSets
 
-The NetworkSet can also be used to block access from a specific ip address or cidr to an endpoint in your cluster. To demonstrate it, we are going to block the access from your workstation to the ```facts``` external ```LoadBalancer``` service.
+The NetworkSet can also be used to block access from a specific ip address or cidr to an endpoint in your cluster. To demonstrate it, we are going to block the access from your workstation to the `facts` external `LoadBalancer` service.
 
    a. Test the access to the ```facts``` external service
 
