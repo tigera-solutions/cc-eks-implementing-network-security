@@ -14,6 +14,7 @@ As you saw in the previous module, it is also possible to create network policie
    apiVersion: projectcalico.org/v3
    metadata:
      name: allowed-api
+     namespace: catfacts
      labels: 
        type: allowed-api
    spec:
