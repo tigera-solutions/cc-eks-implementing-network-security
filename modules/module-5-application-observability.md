@@ -1,46 +1,10 @@
 # Module 5 - Application Level Observability
 
-L7 logs capture application interactions from HTTP header data in requests. Data shows what is actually sent in communications between specific pods, providing more specificity than flow logs. (Flow logs capture data only from connections for workload interactions).
+L7 logs capture application interactions from HTTP header data in the requests. Data shows what is actually sent in communications between specific pods, providing more specificity than flow logs. (Flow logs capture data only from connections for workload interactions).
 
 Calico Cloud collects L7 logs by sending the selected traffic through an Envoy proxy.
 
-L7 logs are visible in the Manager UI, service graph, in the HTTP tab.
-
-1. Configure Felix for log data collection
-
-   Enable the Policy Sync API in Felix. For cluster-wide enablement, modify the default FelixConfiguration and set the field policySyncPathPrefix to /var/run/nodeagent.
-
-   ```bash
-   kubectl patch felixconfiguration default --type='merge' -p '{"spec":{"policySyncPathPrefix":"/var/run/nodeagent"}}'
-   ```
-
-2. Configure the ApplicationLayer resource for L7 logs. Ensure that the collectLogs field is set to Enabled.
-
-   ```yaml
-   kubectl apply -f - <<-EOF
-   apiVersion: operator.tigera.io/v1
-   kind: ApplicationLayer
-   metadata:
-     name: tigera-secure
-   spec:
-     logCollection:
-       collectLogs: Enabled
-       logIntervalSeconds: 5
-       logRequestsPerInterval: -1
-   EOF
-   ```
-
-   This creates l7-log-collector daemonset in calico-system namespace.
-
-   Ensure that the daemonset progresses and l7-collector and envoy-proxy containers inside the daemonset are in a Running state.
-
-3. Select traffic for L7 log collection
-
-   Annotate the frontend service to collect L7 logs as shown.
-
-   ```bash
-   kubectl annotate svc facts -n catfacts projectcalico.org/l7-logging=true
-   ```
+L7 logs can be viewed in the Manager UI, in the Service Graph, and also through the Calico Cloud Elastic dashboards. Let's go ahead and verify this.
 
 ## Service Graph
 

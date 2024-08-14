@@ -26,7 +26,7 @@ As you saw in the previous module, it is also possible to create network policie
 
    Change the worker policy to refer to the allowed-api Network set using its label as `to:` `Endpoint`.
 
-<image>
+   <image>
 
 3. Test the access to the allowed endpoints.
 
