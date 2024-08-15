@@ -36,7 +36,7 @@ As you saw in the previous module, it is also possible to create network policie
    ```
 
    ```bash
-   # test egress access to dog.ceo from worker pod - this should be allowed.
+   # test egress access to catfact.ninja from worker pod - this should be allowed.
    kubectl -n catfacts exec -t $(kubectl -n catfacts get po -l app=worker -ojsonpath='{.items[0].metadata.name}') -- sh -c 'curl -m3 -skI https://catfact.ninja/ 2>/dev/null | grep -i http'
    ```
 
